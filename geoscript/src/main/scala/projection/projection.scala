@@ -3,6 +3,7 @@ package org.geoscript
 import org.geoscript.geometry._
 import org.geotools.geometry.jts.JTS
 import org.geotools.referencing.CRS
+import scala.util.Try
 
 package object projection {
   /**
@@ -91,7 +92,8 @@ package object projection {
      * val reprojected = convert(point)
      * }}}
      */
-    def to(dest: Projection): Transform = CRS.findMathTransform(crs, dest)
+    def to(dest: Projection): Transform = Try(CRS.findMathTransform(crs, dest)).
+      getOrElse(CRS.findMathTransform(crs, dest, true))
 
     /**
      * Get the official spatial reference identifier (SRID) for this projection, if any
