@@ -2,9 +2,11 @@ package org.geoscript.support.interval
 
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
-import org.scalatest._, prop._
+import org.scalatest._
+import org.scalatest.propspec.AnyPropSpec
+import org.scalatestplus.scalacheck.Checkers
 
-class IntervalCheck extends PropSpec with Checkers {
+class IntervalCheck extends AnyPropSpec with Checkers {
   import Interval.intersection
   val joinLeft = Cap.join[String](_ < _) _
 

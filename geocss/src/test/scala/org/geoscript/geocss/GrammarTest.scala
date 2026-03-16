@@ -2,13 +2,14 @@ package org.geoscript.geocss
 
 import scala.util.parsing.input.CharSequenceReader
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.{ Matcher, MatchResult, ShouldMatchers }
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.{ Matcher, MatchResult }
+import org.scalatest.matchers.should.Matchers
 
 /**
  * Tests for specific low-level productions in the CSS grammar
  */
-class GrammarTest extends FunSuite with ShouldMatchers {
+class GrammarTest extends AnyFunSuite with Matchers {
   import CssParser._
 
   def failOn(text: String): Matcher[CssParser.Parser[_]] = not(succeedOn(text))

@@ -2,13 +2,14 @@ package org.geoscript.geocss
 
 import org.geoscript.geocss.testing._
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.{ BeMatcher, ShouldMatchers }
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.BeMatcher
+import org.scalatest.matchers.should.Matchers
 
 /**
  * Acceptance tests against the DOM of a generated SLD
  */
-class SLDTest extends FunSuite with ShouldMatchers {
+class SLDTest extends AnyFunSuite with Matchers {
   def css2sld2dom(filename: String) = {
     val url = getClass.getResource(filename)
     val stream = getClass.getResourceAsStream(filename)

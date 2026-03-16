@@ -7,14 +7,15 @@ import collection.JavaConversions._
 import org.geotools.{ styling => gt }
 import org.opengis.{ filter => ogc }
 
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.{
-  ShouldMatchers, HavePropertyMatcher, HavePropertyMatchResult, Matcher }
+  HavePropertyMatcher, HavePropertyMatchResult, Matcher }
+import org.scalatest.matchers.should._
 
 /**
  * Tests for specific issues (mostly bugs that came up during testing)
  */
-class Regressions extends FunSuite with ShouldMatchers {
+class Regressions extends AnyFunSuite with Matchers {
   val Translator = new Translator
 
   def in(s: String) = getClass.getResourceAsStream(s)

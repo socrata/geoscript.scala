@@ -4,9 +4,9 @@ import org.geoscript.support.interval.Interval
 import org.opengis.filter.Filter
 import org.geotools.filter.text.ecql.ECQL.toFilter
 
-import org.scalatest.FunSuite, org.scalatest.matchers.ShouldMatchers
+import org.scalatest.funsuite.AnyFunSuite, org.scalatest.matchers.should.Matchers
 
-class FiltersAreSententialTest extends FunSuite with ShouldMatchers {
+class FiltersAreSententialTest extends AnyFunSuite with Matchers {
   import FiltersAreSentential._
 
   test("Null") {

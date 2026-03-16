@@ -1,9 +1,11 @@
 package org.geoscript.support.logic
 
 import org.scalacheck._, Arbitrary._, Prop.propBoolean
-import org.scalatest._, prop._
+import org.scalatest._
+import org.scalatest.propspec.AnyPropSpec
+import org.scalatestplus.scalacheck.Checkers
 
-class KnowledgeSpecification extends PropSpec with Checkers {
+class KnowledgeSpecification extends AnyPropSpec with Checkers {
   import Knowledge.sat
   import symbolic._
   import Generators._

@@ -5,10 +5,11 @@ import org.opengis.filter.Filter
 import org.geotools.filter.text.ecql.ECQL
 import scala.collection.JavaConversions._
 
-import org.scalatest.{ FunSuite, OptionValues }
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.OptionValues
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
-class FilterTest extends FunSuite with ShouldMatchers with OptionValues {
+class FilterTest extends AnyFunSuite with Matchers with OptionValues {
   import ECQL.toFilter
   import org.geoscript.support.logic.Knowledge.{ Absurdity, Oblivion }
   val kb = Oblivion[Filter]

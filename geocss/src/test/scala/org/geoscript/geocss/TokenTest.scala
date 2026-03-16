@@ -3,11 +3,13 @@ package org.geoscript.geocss
 import org.opengis.filter.Filter.{ INCLUDE, EXCLUDE }
 import org.opengis.{ filter => ogc }
 import org.scalatest._, matchers._
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
 /**
  * Tests for token methods
  */
-class TokenTest extends FunSuite with ShouldMatchers { 
+class TokenTest extends AnyFunSuite with Matchers { 
   val filterFactory =
     org.geotools.factory.CommonFactoryFinder.getFilterFactory2(null)
   import filterFactory._

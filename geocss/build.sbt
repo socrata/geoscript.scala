@@ -10,8 +10,9 @@ libraryDependencies <++= gtVersion { v =>
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
   "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-  "org.scalacheck" %% "scalacheck" % "1.12.5" % "test",
-  "org.scalatest" %% "scalatest" % "2.2.6" % "test")
+  "org.scalatest" %% "scalatest" % "3.2.19" % "test",
+  "org.scalatestplus" %% "scalacheck-1-19" % "3.2.19.0" % "test"
+)
 
 initialCommands += """
 import org.{ geotools => gt }

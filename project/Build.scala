@@ -9,7 +9,7 @@ object GeoScript extends Build {
       organization := "org.geoscript",
       version := "0.8.2",
       gtVersion := "9.3",
-      scalaVersion := "2.11.8",
+      scalaVersion := "2.12.8",
       scalacOptions ++= Seq("-feature", "-deprecation", "-Xlint", "-unchecked"),
       javacOptions ++= Seq("-source", "6"),
       publishTo := Some(Resolver.file("file", file("release")))
@@ -19,8 +19,9 @@ object GeoScript extends Build {
     Seq[Setting[_]](
       fork := true,
       resolvers ++= Seq(
-        "opengeo" at "http://repo.opengeo.org/",
-        "osgeo" at "http://download.osgeo.org/webdav/geotools/"
+        // "opengeo" at "http://repo.opengeo.org/",
+        // "osgeo" at "http://download.osgeo.org/webdav/geotools/"
+        "socrata artifactory" at "https://repo.socrata.com/artifactory/libs-release"
       )
     ) ++ meta ++ defaultSettings
 

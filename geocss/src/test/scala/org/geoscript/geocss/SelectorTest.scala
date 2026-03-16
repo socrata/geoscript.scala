@@ -1,9 +1,9 @@
 package org.geoscript.geocss
 
 import org.geotools.filter.text.ecql.ECQL
-import org.scalatest._, matchers._
+import org.scalatest._, funsuite.AnyFunSuite, matchers.should.Matchers
 
-class SelectorTest extends FunSuite with ShouldMatchers {
+class SelectorTest extends AnyFunSuite with Matchers {
   import Selector.SelectorsAreSentential.{ disprovenBy, provenBy }
 
   def scale_<(d: Double): Selector = PseudoSelector("scale", "<", d)

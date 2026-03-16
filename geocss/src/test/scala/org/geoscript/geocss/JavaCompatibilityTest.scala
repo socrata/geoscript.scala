@@ -1,9 +1,9 @@
 package org.geoscript.geocss
 
-import org.scalatest.FunSuite, org.scalatest.matchers.ShouldMatchers
+import org.scalatest.funsuite.AnyFunSuite, org.scalatest.matchers.should.Matchers
 import org.geoscript.geocss.compat.CSS2SLD
 
-class JavaCompatibilityTest extends FunSuite with ShouldMatchers { 
+class JavaCompatibilityTest extends AnyFunSuite with Matchers { 
   test("Java compatibility layer can convert CSS to Style") {
     val stream = getClass.getResourceAsStream("/minimal.css")
     val reader = new java.io.InputStreamReader(stream)

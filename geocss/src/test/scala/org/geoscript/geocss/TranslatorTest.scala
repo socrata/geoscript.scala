@@ -1,8 +1,8 @@
 package org.geoscript.geocss
 
-import org.scalatest._, matchers._
+import org.scalatest._, funsuite.AnyFunSuite, matchers.should._
 
-class TranslatorTest extends FunSuite with ShouldMatchers {
+class TranslatorTest extends AnyFunSuite with Matchers {
   val Translator = new Translator
   import Translator.color
   

@@ -1,12 +1,12 @@
 package org.geoscript.geocss
 
 import org.{ geotools => gt }
-import org.scalatest.FunSuite, org.scalatest.matchers.ShouldMatchers
+import org.scalatest.funsuite.AnyFunSuite, org.scalatest.matchers.should.Matchers
 
 /**
  * Generic tests to be applied in bulk to many styles
  */
-class SmokeTest extends FunSuite with ShouldMatchers { 
+class SmokeTest extends AnyFunSuite with Matchers { 
   val testFiles = Seq(
     "/test-basic.css"    -> 2,
     "/states.css"        -> 4,
@@ -61,8 +61,7 @@ class SmokeTest extends FunSuite with ShouldMatchers {
 /**
  * Tests of specific handling of the CSS AST
  */
-class CssTest extends org.scalatest.FunSuite
-with org.scalatest.matchers.ShouldMatchers {
+class CssTest extends AnyFunSuite with Matchers {
   import CssOps.{ Specificity, expand }
 
   def expr(x: String) = 

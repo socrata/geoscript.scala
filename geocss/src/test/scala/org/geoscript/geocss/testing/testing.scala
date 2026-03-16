@@ -1,10 +1,11 @@
 package org.geoscript.geocss
 
 import org.scalatest.matchers.{
-  BeMatcher, Matcher, ShouldMatchers, MatchResult
+  BeMatcher, Matcher, MatchResult
 }
+import org.scalatest.matchers.should._
 
-package object testing extends ShouldMatchers {
+package object testing extends Matchers {
   def closeTo(x: Double, eps: Double): BeMatcher[Double] =
     new BeMatcher[Double] {
       def apply(d: Double) = new MatchResult(

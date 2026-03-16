@@ -1,12 +1,12 @@
 package org.geoscript
 
-import org.scalatest._, matchers._
+import org.scalatest._, funsuite._, matchers._, should._
 
 import feature._, feature.schemaBuilder._
 import geometry._, geometry.builder._
 import projection._
 
-class UsageTests extends FunSuite with ShouldMatchers {
+class UsageTests extends AnyFunSuite with Matchers {
     // test("work like on the geoscript homepage") { 
     //   val NAD83 = lookupEPSG("EPSG:26912").get
     //   val p = Point(-111, 45.7)

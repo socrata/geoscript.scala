@@ -1,9 +1,10 @@
 package org.geoscript.support.graph
 
-import org.scalatest._, prop._
-import org.scalatest.prop.Checkers
+import org.scalatest._
+import org.scalatest.propspec.AnyPropSpec
+import org.scalatestplus.scalacheck.Checkers
 
-class GraphCheck extends PropSpec with Checkers {
+class GraphCheck extends AnyPropSpec with Checkers {
   val parity = (ps: Set[Int]) => 
     (a: Int, b: Int) => (ps - 0).exists(p => (a + b) % p == 0)
 

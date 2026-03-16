@@ -1,12 +1,12 @@
 package org.geoscript
 package workspace
 
-import org.scalatest._, matchers._
+import org.scalatest._, funsuite._, matchers._, should._
 import geometry._, geometry.builder._
 import feature._, feature.schemaBuilder._
 import projection._
 
-class MemorySpec extends FunSuite with ShouldMatchers {
+class MemorySpec extends AnyFunSuite {
   test("be able to create layers") {
     1 === 1
     // val schema = Schema("cities",
