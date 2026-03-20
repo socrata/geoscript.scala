@@ -8,8 +8,8 @@ libraryDependencies <++= gtVersion { v =>
 }
 
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
-  "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "2.1.0",
+  "org.scala-lang.modules" %% "scala-xml" % "2.0.1",
   "org.scalatest" %% "scalatest" % "3.2.19" % "test",
   "org.scalatestplus" %% "scalacheck-1-19" % "3.2.19.0" % "test"
 )
@@ -22,7 +22,7 @@ import gt.filter.text.ecql.ECQL.{ toFilter => cql }
 import geocss.filter.FiltersAreSentential
 import support.logic.{ given, reduce }
 def in(path: String) = new java.io.FileReader(new java.io.File(path))
-def load(path: String) = 
+def load(path: String) =
   geocss.CssParser.parseAll(
     geocss.CssParser.styleSheet, in(path)
   ).get
