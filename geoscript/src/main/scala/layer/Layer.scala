@@ -75,7 +75,7 @@ package object layer {
      * Add multiple features to this data set.  This should be preferred over
      * repeated use of += when adding multiple features.
      */
-    def ++= (features: Traversable[Feature]) {
+    def ++= (features: Iterable[Feature]) {
       val tx = new org.geotools.data.DefaultTransaction
       val writer = dstore.getFeatureWriterAppend(store.name, tx)
 
@@ -97,7 +97,7 @@ package object layer {
 
     def -= (feature: Feature*) { this --= feature }
 
-    def --= (features: Traversable[Feature]) {
+    def --= (features: Iterable[Feature]) {
       exclude(Filter.id(
         features.filter { null !=  _ }
                 .map { f => f.id }

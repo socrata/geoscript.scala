@@ -417,7 +417,7 @@ class Translator(val baseURL: Option[java.net.URL]) {
    * Convert a set of properties to a set of Symbolizer objects attached to the
    * given Rule.
    */
-  def symbolize(rule: Rule): Seq[Pair[Double, Symbolizer]] = {
+  def symbolize(rule: Rule): Seq[(Double, Symbolizer)] = {
     val properties = rule.properties
 
     def orderedMarkRules(symbolizerType: String, order: Int): Seq[Property] =
@@ -439,8 +439,8 @@ class Translator(val baseURL: Option[java.net.URL]) {
     }
 
     val lineSyms: Seq[(Double, LineSymbolizer)] = 
-      (expand(properties, "stroke").toStream zip
-       (Stream.from(1) map { orderedMarkRules("stroke", _) })
+      (expand(properties, "stroke").to(LazyList) zip
+       (LazyList.from(1) map { orderedMarkRules("stroke", _) })
       ).map { case (props, markProps) =>
         val (_, _, stroke) = fill(props("stroke"))
         val dashArray = props.get("stroke-dasharray") map lengthArray
@@ -488,8 +488,8 @@ class Translator(val baseURL: Option[java.net.URL]) {
       }
 
     val polySyms: Seq[(Double, PolygonSymbolizer)] = 
-      (expand(properties, "fill").toStream zip
-       (Stream.from(1) map { orderedMarkRules("fill", _) })
+      (expand(properties, "fill").to(LazyList) zip
+       (LazyList.from(1) map { orderedMarkRules("fill", _) })
       ).map { case (props, markProps) =>
         val fillParams = fill(props("fill"))
         val size = props.get("fill-size") map length
@@ -521,8 +521,8 @@ class Translator(val baseURL: Option[java.net.URL]) {
       }
 
     val pointSyms: Seq[(Double, PointSymbolizer)] = 
-      (expand(properties, "mark").toStream zip
-       (Stream.from(1) map { orderedMarkRules("mark", _) })
+      (expand(properties, "mark").to(LazyList) zip
+       (LazyList.from(1) map { orderedMarkRules("mark", _) })
       ).flatMap { case (props, markProps) => 
         val geom = (props.get("mark-geometry") orElse props.get("geometry"))
           .flatMap(expression)
@@ -543,8 +543,8 @@ class Translator(val baseURL: Option[java.net.URL]) {
       }
 
     val textSyms: Seq[(Double, TextSymbolizer)] =
-      (expand(properties, "label").toStream zip
-       (Stream.from(1) map { orderedMarkRules("shield", _) })
+      (expand(properties, "label").to(LazyList) zip
+       (LazyList.from(1) map { orderedMarkRules("shield", _) })
       ).map { case (props, shieldProps) => 
         val fillParams = props.get("font-fill").map(fill)
         val fontFamily = props.get("font-family")
@@ -667,8 +667,8 @@ class Translator(val baseURL: Option[java.net.URL]) {
       }
 
     val rasterSyms: Seq[(Double, RasterSymbolizer)] =
-      (expand(properties, "raster-channels").toStream zip
-       (Stream.from(1) map { orderedMarkRules("outline", _) })
+      (expand(properties, "raster-channels").to(LazyList) zip
+       (LazyList.from(1) map { orderedMarkRules("outline", _) })
       ).map { case (props, outlineProps) =>
         val geom = 
           (props get "raster-geometry")
@@ -765,7 +765,7 @@ class Translator(val baseURL: Option[java.net.URL]) {
     yield (t, s.filter(isForTypename(t)).map(stripTypenames))
   }
 
-  def extractScaleRanges(rule: Rule): Seq[Pair[Option[Double], Option[Double]]] = {
+  def extractScaleRanges(rule: Rule): Seq[(Option[Double], Option[Double])] = {
     val scales = 
       flatten(And(rule.selectors))
         .collect { 

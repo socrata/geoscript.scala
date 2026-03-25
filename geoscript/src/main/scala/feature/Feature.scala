@@ -2,7 +2,7 @@ package org.geoscript //.feature
 
 import org.geoscript.geometry._
 import org.geoscript.projection._
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 /**
  * Facilities for manipulating vector data.
@@ -65,7 +65,7 @@ package object feature {
 
   implicit class RichSchema(val schema: Schema) extends AnyVal {
     def name: String = schema.getName.getLocalPart
-    def fields: Seq[Field] = schema.getAttributeDescriptors.asScala
+    def fields: Seq[Field] = schema.getAttributeDescriptors.asScala.toSeq
     def field(name: String): Field = schema.getDescriptor(name)
     def geometryField: GeoField  = schema.getGeometryDescriptor
   }
@@ -100,9 +100,14 @@ package object feature {
   }
 
   implicit class RichFeatureCollection(val collection: FeatureCollection)
-  extends Traversable[Feature]
+  extends Iterable[Feature]
   {
-    def foreach[U](f: Feature => U): Unit = {
+    def iterator: Iterator[Feature] = new Iterator[Feature] {
+      private val iter = collection.features
+      def hasNext: Boolean = iter.hasNext
+      def next(): Feature = iter.next
+    }
+    override def foreach[U](f: Feature => U): Unit = {
       val iter = collection.features
       try
         while (iter.hasNext) f(iter.next)

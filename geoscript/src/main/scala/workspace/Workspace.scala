@@ -4,7 +4,7 @@ import java.io.{File, Serializable}
 import org.geoscript.feature._
 import org.geoscript.layer._
 import org.{geotools => gt}
-import scala.collection.JavaConversions._
+import scala.jdk.CollectionConverters._
 
 package object workspace {
   type Workspace = org.geotools.data.DataStore
@@ -13,11 +13,11 @@ package object workspace {
     def count = workspace.getTypeNames.length
     def names: Seq[String] = workspace.getTypeNames
     def layer(theName: String): Layer = workspace.getFeatureSource(theName)
-    def layers: Seq[Layer] = names.view.map(layer(_))
+    def layers: Seq[Layer] = names.view.map(layer(_)).toSeq
 
     def create(name: String, fields: Field*): Layer = create(name, fields) 
 
-    def create(name: String, fields: Traversable[Field]): Layer = {
+    def create(name: String, fields: Iterable[Field]): Layer = {
       val builder = new gt.feature.simple.SimpleFeatureTypeBuilder
       builder.setName(name)
       fields foreach {

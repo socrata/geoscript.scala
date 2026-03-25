@@ -5,7 +5,7 @@ import org.geoscript.support.logic.Sentential
 
 import org.opengis.{ filter => ogc }
 
-import collection.JavaConversions._
+import scala.jdk.CollectionConverters._
 
 package object filter {
   implicit object FiltersAreSentential extends Sentential[ogc.Filter] {
@@ -20,20 +20,20 @@ package object filter {
     def or(p: ogc.Filter, q: ogc.Filter): ogc.Filter =
       (p, q) match {
         case (p: ogc.Or, q: ogc.Or) =>
-          factory.or(p.getChildren ++ q.getChildren)
-        case (p: ogc.Or, q) => factory.or(p.getChildren :+ q)
-        case (p, q: ogc.Or) => factory.or(p +: (q.getChildren))
+          factory.or((p.getChildren.asScala ++ q.getChildren.asScala).asJava)
+        case (p: ogc.Or, q) => factory.or((p.getChildren.asScala :+ q).asJava)
+        case (p, q: ogc.Or) => factory.or((p +: q.getChildren.asScala).asJava)
         case (p, q) => factory.or(p, q)
       }
 
     def extractOr(p: ogc.Filter): Option[(ogc.Filter, ogc.Filter)] =
       p match {
         case (p: ogc.Or) =>
-          (p.getChildren: Seq[ogc.Filter]) match {
+          (p.getChildren.asScala.toSeq: Seq[ogc.Filter]) match {
             case Seq() => Some((False, False))
             case Seq(q) => Some((q, False))
             case Seq(p, q) => Some((p, q))
-            case Seq(h, t @ _*) => Some((h, factory.or(t)))
+            case Seq(h, t @ _*) => Some((h, factory.or(t.asJava)))
           }
         case _ => None
       }
@@ -41,20 +41,20 @@ package object filter {
     def and(p: ogc.Filter, q: ogc.Filter): ogc.Filter =
       (p, q) match {
         case (p: ogc.And, q: ogc.And) =>
-          factory.and(p.getChildren.toList ++ q.getChildren)
-        case (p: ogc.And, q) => factory.and(p.getChildren :+ q)
-        case (p, q: ogc.And) => factory.and(p +: (q.getChildren))
+          factory.and((p.getChildren.asScala ++ q.getChildren.asScala).asJava)
+        case (p: ogc.And, q) => factory.and((p.getChildren.asScala :+ q).asJava)
+        case (p, q: ogc.And) => factory.and((p +: q.getChildren.asScala).asJava)
         case (p, q) => factory.and(p, q)
       }
 
     def extractAnd(p: ogc.Filter): Option[(ogc.Filter, ogc.Filter)] =
       p match {
         case (p: ogc.And) =>
-          (p.getChildren: Seq[ogc.Filter]) match {
+          (p.getChildren.asScala.toSeq: Seq[ogc.Filter]) match {
             case Seq() => Some((True, True))
             case Seq(q) => Some((q, True))
             case Seq(p, q) => Some((p, q))
-            case Seq(h, t @ _*) => Some((h, factory.and(t)))
+            case Seq(h, t @ _*) => Some((h, factory.and(t.asJava)))
           }
         case _ => None
       }
@@ -376,11 +376,11 @@ package object filter {
 
       f match {
         case (p: ogc.And) =>
-          val child = consolidateOn(both)(p.getChildren)
-          factory.and(child)
+          val child = consolidateOn(both)(p.getChildren.asScala.toSeq)
+          factory.and(child.asJava)
         case (p: ogc.Or) =>
-          val child = consolidateOn(either)(p.getChildren)
-          factory.or(child)
+          val child = consolidateOn(either)(p.getChildren.asScala.toSeq)
+          factory.or(child.asJava)
         case (p: ogc.Not) =>
           factory.not(consolidate(p.getFilter))
         case p => p

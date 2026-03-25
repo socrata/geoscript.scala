@@ -2,7 +2,7 @@ package org.geoscript.geocss
 
 import org.geotools.{ styling => gt }
 import gt.Style
-import collection.JavaConversions._
+import scala.jdk.CollectionConverters._
 
 object Benchmark {
   val Translator = new Translator()
@@ -43,7 +43,7 @@ object Benchmark {
   }
 
   def ruleCount(sld: Style): Int = {
-    sld.featureTypeStyles.foldLeft(0) { (i, fts) => i + fts.rules.length }
+    sld.featureTypeStyles.asScala.foldLeft(0) { (i, fts) => i + fts.rules.size }
   }
 
   def main(args: Array[String]) {

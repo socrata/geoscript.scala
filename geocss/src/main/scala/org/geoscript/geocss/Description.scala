@@ -35,7 +35,7 @@ object Description {
   private def extract(comment: String, keyword: String): Option[String] = {
     val pattern = ("""\s*@""" + keyword + """:?\s*""").r
 
-    comment.lines.map(_.replaceFirst("""\s*\*""", "")).find {
+    comment.linesIterator.map(_.replaceFirst("""\s*\*""", "")).find {
       line => pattern.findPrefixOf(line) != None
     } map { pattern.replaceFirstIn(_, "") }
   }

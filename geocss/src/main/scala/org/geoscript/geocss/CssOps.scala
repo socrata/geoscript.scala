@@ -1,7 +1,7 @@
 package org.geoscript.geocss
 
 import scala.math._
-import collection.JavaConversions._
+import scala.jdk.CollectionConverters._
 
 import org.opengis.filter.{
   BinaryComparisonOperator,
@@ -213,7 +213,7 @@ object CssOps {
         case b: BinaryComparisonOperator =>
           extract(b.getExpression1) ++ extract(b.getExpression2)
         case b: BinaryLogicOperator =>
-          b.getChildren().flatMap(extract)
+          b.getChildren().asScala.flatMap(extract).toSeq
         case not: ogc.Not =>
           extract(not.getFilter)
         case b: PropertyIsBetween =>
@@ -234,7 +234,7 @@ object CssOps {
         case b: BinaryExpression =>
           extract(b.getExpression1) ++ extract(b.getExpression2)
         case f: org.opengis.filter.expression.Function =>
-          f.getParameters().flatMap(extract)
+          f.getParameters().asScala.flatMap(extract).toSeq
         case p: PropertyName =>
           Seq(p.getPropertyName)
         case _ =>
@@ -363,7 +363,7 @@ object CssOps {
         }
 
         def ensureLength(xs: Seq[Seq[Value]]): Seq[Seq[Value]] =
-          Stream.continually(xs).flatten.take(keyProp.values.length)
+          LazyList.continually(xs).flatten.take(keyProp.values.length)
 
         val normalized = 
           for (Property(name, values) <- clean(props)) 

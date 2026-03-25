@@ -34,7 +34,7 @@ class KnowledgeSpecification extends AnyPropSpec with Checkers {
   = {
     require(atomsIn(s) subsetOf atoms)
 
-    val allFalse = (atoms zip Stream.continually(false)).toMap
+    val allFalse = (atoms zip LazyList.continually(false)).toMap
     val assignments = 
       for (subset <- atoms.subsets) yield
         allFalse ++ (subset map (_ -> true))

@@ -10,9 +10,9 @@ object GeoScript {
     Seq[Setting[_]](
       organization := "com.socrata",
       version := "0.8.5-TEST",
-      scalaVersion := "2.12.8",
+      scalaVersion := "2.13.16",
       scalacOptions ++= Seq("-feature", "-deprecation", "-Xlint", "-unchecked"),
-      javacOptions ++= Seq("-source", "6"),
+      javacOptions ++= Seq("--release", "25"),
       publishTo := Some(Resolver.file("file", file("release")))
     )
 

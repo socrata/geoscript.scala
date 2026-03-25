@@ -1,7 +1,7 @@
 package org.geoscript.style
 package combinators
 
-import scala.collection.JavaConversions._
+import scala.jdk.CollectionConverters._
 import org.geoscript.filter.{ factory => _, _ }
 import org.geoscript.filter.builder._
 
@@ -76,7 +76,7 @@ abstract class SimpleStyle extends Style {
     for (f <- filter) rule.setFilter(f)
     for (s <- minScale) rule.setMinScaleDenominator(s)
     for (s <- maxScale) rule.setMaxScaleDenominator(s)
-    rule.symbolizers.addAll(symbolizers)
+    rule.symbolizers.addAll(symbolizers.asJava)
 
     val ftstyle = factory.createFeatureTypeStyle()
     ftstyle.rules.add(rule)
@@ -117,7 +117,7 @@ case class CompositeStyle(styles: Seq[Style]) extends Style {
 
     for ((z, styles) <- this.flatten.groupBy(_.zIndex).toSeq.sortBy(_._1)) {
       val ftStyle = factory.createFeatureTypeStyle()
-      for (s <- styles; fts <- s.build.featureTypeStyles)
+      for (s <- styles; fts <- s.build.featureTypeStyles.asScala)
         ftStyle.rules.addAll(fts.rules)
       style.featureTypeStyles.add(ftStyle)
     }

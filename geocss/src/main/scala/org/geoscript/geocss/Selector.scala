@@ -1,6 +1,6 @@
 package org.geoscript.geocss
 
-import collection.JavaConversions._
+import scala.jdk.CollectionConverters._
 
 import org.opengis.{ filter => ogc }, ogc.Filter
 
@@ -306,7 +306,7 @@ case class And(children: Seq[Selector]) extends Selector {
           operands.filter(Filter.INCLUDE != _) match {
             case Seq() => Filter.INCLUDE
             case Seq(f) => f
-            case fs => filters.and(fs)
+            case fs => filters.and(fs.asJava)
           }
         }
       )
@@ -331,7 +331,7 @@ case class Or(children: Seq[Selector]) extends Selector {
             case Seq() if (parts._1.isEmpty) => Filter.INCLUDE
             case Seq() => Filter.EXCLUDE
             case Seq(f) => f
-            case fs => filters.or(fs)
+            case fs => filters.or(fs.asJava)
           }
         }
       )
