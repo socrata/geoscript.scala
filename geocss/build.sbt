@@ -1,6 +1,9 @@
+import GeoScript.gtVersion
+
 name := "geocss"
 
-libraryDependencies <++= gtVersion { v =>
+libraryDependencies ++= {
+  val v = gtVersion.value
   Seq(
     "org.geotools" % "gt-main" % v,
     "org.geotools" % "gt-cql" % v

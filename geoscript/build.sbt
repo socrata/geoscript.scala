@@ -1,9 +1,12 @@
+import GeoScript.gtVersion
+
 name := "geoscript"
 
 libraryDependencies +=
   "org.scala-lang.modules" %% "scala-swing" % "2.1.1"
 
-libraryDependencies <++= gtVersion { v => 
+libraryDependencies ++= {
+  val v = gtVersion.value
   Seq(
     "org.geotools" % "gt-main" % v,
     "org.geotools" % "gt-epsg-hsql" % v,
