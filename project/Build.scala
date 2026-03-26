@@ -9,8 +9,8 @@ object GeoScript {
   val meta =
     Seq[Setting[_]](
       organization := "com.socrata",
-      version := "0.8.5-TEST",
-      scalaVersion := "2.13.16",
+      version := "0.8.5-GEO12",
+      scalaVersion := "2.12.21",
       scalacOptions ++= Seq("-feature", "-deprecation", "-Xlint", "-unchecked"),
       javacOptions ++= Seq("--release", "25"),
       publishTo := Some(Resolver.file("file", file("release")))
@@ -20,8 +20,7 @@ object GeoScript {
     Seq[Setting[_]](
       fork := true,
       resolvers ++= Seq(
-        // "opengeo" at "http://repo.opengeo.org/",
-        // "osgeo" at "http://download.osgeo.org/webdav/geotools/"
+        "osgeo" at "https://repo.osgeo.org/repository/release/",
         "socrata artifactory" at "https://repo.socrata.com/artifactory/libs-release"
       )
     ) ++ meta
@@ -53,7 +52,7 @@ object GeoScript {
     project
       .in(file("geocss"))
       .settings(common)
-      .settings(gtVersion := "9.3")
+      .settings(gtVersion := "27.5")
 
   lazy val examples =
     project
@@ -66,7 +65,7 @@ object GeoScript {
     project
       .in(file("geoscript"))
       .settings(common)
-      .settings(gtVersion := "9.3")
+      .settings(gtVersion := "27.5")
       .settings(sphinxSettings)
       .dependsOn(css)
 

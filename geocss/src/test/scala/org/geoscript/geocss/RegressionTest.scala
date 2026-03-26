@@ -2,7 +2,7 @@ package org.geoscript.geocss
 
 import org.geoscript.geocss.testing._
 
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 import org.geotools.{ styling => gt }
 import org.opengis.{ filter => ogc }

@@ -1,6 +1,6 @@
 package org.geoscript.geometry
 
-import com.vividsolutions.jts.geom.util.AffineTransformation
+import org.locationtech.jts.geom.util.AffineTransformation
 
 class Transform(tx: AffineTransformation) {
   def apply[G <: Geometry](g: G): G = {

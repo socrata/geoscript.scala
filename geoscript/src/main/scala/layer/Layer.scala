@@ -2,7 +2,7 @@ package org.geoscript
 
 import java.io.File
 
-import com.vividsolutions.jts.{ geom => jts }
+import org.locationtech.jts.{ geom => jts }
 
 import org.geoscript.feature._
 import org.geoscript.filter._

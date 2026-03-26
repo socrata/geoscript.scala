@@ -8,7 +8,7 @@ import org.geoscript.style._
 
 import org.geotools.geometry.jts.{ LiteShape, ReferencedEnvelope }
 import java.awt.{ Graphics2D, RenderingHints }
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 private class MapWidget extends swing.Component {
   var viewport = new ReferencedEnvelope(-180, -90, 180, 90, LatLon)

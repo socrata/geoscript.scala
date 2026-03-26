@@ -1,7 +1,7 @@
 package org.geoscript.style
 package combinators
 
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 import org.geoscript.filter.{ factory => _, _ }
 import org.geoscript.filter.builder._
 

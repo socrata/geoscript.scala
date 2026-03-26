@@ -2,7 +2,7 @@ package org.geoscript.geocss
 
 import org.geotools.{ styling => gt }
 import gt.Style
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 object Benchmark {
   val Translator = new Translator()
@@ -28,7 +28,7 @@ object Benchmark {
 }
 """
 
-  val tx = new org.geotools.styling.SLDTransformer()
+  val tx = new org.geotools.xml.styling.SLDTransformer()
   tx.setIndentation(4)
 
   def encodeSLD(sld: gt.Style): String = {

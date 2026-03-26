@@ -2,7 +2,7 @@ package org.geoscript //.feature
 
 import org.geoscript.geometry._
 import org.geoscript.projection._
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 /**
  * Facilities for manipulating vector data.

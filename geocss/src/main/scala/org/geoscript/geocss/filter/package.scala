@@ -5,7 +5,7 @@ import org.geoscript.support.logic.Sentential
 
 import org.opengis.{ filter => ogc }
 
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 package object filter {
   implicit object FiltersAreSentential extends Sentential[ogc.Filter] {

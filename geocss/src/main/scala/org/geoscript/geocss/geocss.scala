@@ -1,6 +1,6 @@
 package org.geoscript
 
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 import org.opengis.{ filter => ogc }
 
 package object geocss {

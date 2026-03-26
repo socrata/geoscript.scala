@@ -10,7 +10,7 @@ import org.geotools.factory.CommonFactoryFinder
 import org.geotools.{feature => gt}
 import org.{opengis => ogc}
 
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 trait GeoCrunch {
   def styles = CommonFactoryFinder.getStyleFactory(null)
@@ -24,7 +24,7 @@ trait GeoCrunch {
   }
 
   def create(params: Map[String, Serializable]): DataStore =
-    shp.createNewDataStore((params: Map[_, _]).asJava)
+    shp.createNewDataStore(params.asJava)
 
   def connect(params: (String, Serializable)*): DataStore =
     DataStoreFinder.getDataStore(params.toMap.asJava)

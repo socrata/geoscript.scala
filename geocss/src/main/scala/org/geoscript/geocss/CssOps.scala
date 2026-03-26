@@ -1,7 +1,7 @@
 package org.geoscript.geocss
 
 import scala.math._
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 import org.opengis.filter.{
   BinaryComparisonOperator,
@@ -363,7 +363,7 @@ object CssOps {
         }
 
         def ensureLength(xs: Seq[Seq[Value]]): Seq[Seq[Value]] =
-          LazyList.continually(xs).flatten.take(keyProp.values.length)
+          Stream.continually(xs).flatten.take(keyProp.values.length)
 
         val normalized = 
           for (Property(name, values) <- clean(props)) 

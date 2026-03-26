@@ -2,7 +2,7 @@ package org.geoscript
 
 
 import org.{ geotools => gt }
-import com.vividsolutions.jts.{geom=>jts}
+import org.locationtech.jts.{geom=>jts}
 import java.awt.{ Graphics2D, Rectangle, RenderingHints }
 import gt.geometry.jts.ReferencedEnvelope
 import scala.collection.JavaConverters._
