@@ -42,7 +42,10 @@ object Generators {
         Stream(p, q) #:::
         (for { p2 <- shrink(p) ; p3 <- Seq(p2, And(p2, q)) } yield p3) #:::
         (for { q2 <- shrink(q) ; q3 <- Seq(q2, And(p, q2)) } yield q3)
-      case Or(p, q) => Stream(p, q)
+      case Or(p, q) =>
+        Stream(p, q) #:::
+        (for { p2 <- shrink(p) ; p3 <- Seq(p2, Or(p2, q)) } yield p3) #:::
+        (for { q2 <- shrink(q) ; q3 <- Seq(q2, Or(p, q2)) } yield q3)
       case Not(p) => Stream(p)
       case Atom(_) => Stream(False, True)
       case _ => Stream.empty

@@ -57,7 +57,7 @@ object Shp2Shp extends App {
         case None => 
           println("Destination layer not writable!")
         case Some(writable) =>
-          writable ++= (sourceLayer.features.map(reproject(_, proj)))
+          writable ++= (sourceLayer.features.map(reproject(_, proj)).toIterable)
       }
   }
 }

@@ -100,14 +100,9 @@ package object feature {
   }
 
   implicit class RichFeatureCollection(val collection: FeatureCollection)
-  extends Iterable[Feature]
+  extends Traversable[Feature]
   {
-    def iterator: Iterator[Feature] = new Iterator[Feature] {
-      private val iter = collection.features
-      def hasNext: Boolean = iter.hasNext
-      def next(): Feature = iter.next
-    }
-    override def foreach[U](f: Feature => U): Unit = {
+    def foreach[U](f: Feature => U): Unit = {
       val iter = collection.features
       try
         while (iter.hasNext) f(iter.next)
