@@ -9,10 +9,10 @@ object GeoScript {
   val meta =
     Seq[Setting[_]](
       organization := "com.socrata",
-      version := "0.8.5",
+      version := "0.8.6",
       scalaVersion := "2.12.21",
       scalacOptions ++= Seq("-feature", "-deprecation", "-Xlint", "-unchecked"),
-      javacOptions ++= Seq("--release", "25"),
+      javacOptions ++= Seq("--release", "17"),
       publishTo := Some(Resolver.file("file", file("release")))
     )
 
