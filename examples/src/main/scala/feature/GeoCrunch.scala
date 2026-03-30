@@ -10,7 +10,7 @@ import org.geotools.factory.CommonFactoryFinder
 import org.geotools.{feature => gt}
 import org.{opengis => ogc}
 
-import collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 trait GeoCrunch {
   def styles = CommonFactoryFinder.getStyleFactory(null)
@@ -24,13 +24,13 @@ trait GeoCrunch {
   }
 
   def create(params: Map[String, Serializable]): DataStore =
-    shp.createNewDataStore(params: Map[_, _]);
+    shp.createNewDataStore(params.asJava)
 
   def connect(params: (String, Serializable)*): DataStore =
-    DataStoreFinder.getDataStore(params.toMap: Map[_, _])
+    DataStoreFinder.getDataStore(params.toMap.asJava)
 
   def connect(params: Map[String,Serializable]): DataStore =
-    DataStoreFinder.getDataStore(params: Map[_, _])
+    DataStoreFinder.getDataStore(params.asJava)
 
   def foreach[T <: ogc.feature.`type`.FeatureType, F <: ogc.feature.Feature](
     fc: gt.FeatureCollection[T,F]

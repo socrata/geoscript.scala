@@ -17,7 +17,7 @@ class SLDTest extends AnyFunSuite with Matchers {
     val styleSheet = CssParser.parse(stream).get
     val style = new Translator(Some(url)).css2sld(styleSheet)
     val bos = new java.io.ByteArrayOutputStream
-    val xform = new org.geotools.styling.SLDTransformer
+    val xform = new org.geotools.xml.styling.SLDTransformer
     xform.setIndentation(2)
     xform.transform(style, bos)
     scala.xml.XML.loadString(bos.toString())
@@ -383,9 +383,14 @@ class SLDTest extends AnyFunSuite with Matchers {
 
   test("Labels with multiple expressions should be implicitly concatenated") {
     val labels = css2sld2dom("/complex-label.css")
-    labels \\ "Function" should (not(have(size(0))))
-    for (f <- labels \\ "Function")
-      (f \ "@name").text should equal("strConcat")
+    // GT 27+ serializes multi-part labels as mixed content in <sld:Label>
+    // rather than explicit strConcat Function elements — both are valid SLD.
+    // Verify that both property names appear in the label element.
+    val labelNodes = labels \\ "Label"
+    labelNodes should not(have(size(0)))
+    val labelText = labelNodes.map(_.text).mkString
+    labelText should include("STATE_NAME")
+    labelText should include("STATE_ABBR")
   }
 
   test("label-anchor should be applied even when no label-offset is provided") {

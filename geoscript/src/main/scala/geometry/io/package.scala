@@ -4,8 +4,8 @@ package io
 import org.geoscript.io.{ Sink, Source, Reader, Writer, Format }
 
 object WKT extends Format[Geometry] {
-  private val reader = new com.vividsolutions.jts.io.WKTReader()
-  private val writer = new com.vividsolutions.jts.io.WKTWriter()
+  private val reader = new org.locationtech.jts.io.WKTReader()
+  private val writer = new org.locationtech.jts.io.WKTWriter()
  
   def read(source: Source): Geometry = 
     source { in =>
@@ -25,18 +25,18 @@ object WKT extends Format[Geometry] {
 }
 
 object WKB extends Format[Geometry] {
-  private val reader = new com.vividsolutions.jts.io.WKBReader()
-  private val writer = new com.vividsolutions.jts.io.WKBWriter()
+  private val reader = new org.locationtech.jts.io.WKBReader()
+  private val writer = new org.locationtech.jts.io.WKBWriter()
  
   def read(source: Source): Geometry = 
     source { in =>
-      val s = new com.vividsolutions.jts.io.InputStreamInStream(in)
+      val s = new org.locationtech.jts.io.InputStreamInStream(in)
       reader.read(s)
     }
 
   def write[T](geom: Geometry, sink: Sink[T]): T =
     sink { out =>
-      val s = new com.vividsolutions.jts.io.OutputStreamOutStream(out)
+      val s = new org.locationtech.jts.io.OutputStreamOutStream(out)
       writer.write(geom, s)
     }
 }
@@ -50,7 +50,7 @@ class GeoJSON(format: GeometryJSON) extends Format[Geometry] {
 
 object GeoJSON extends GeoJSON(new GeometryJSON)
 
-import org.geotools.xml.{ Parser, Encoder }
+import org.geotools.xsd.{ Parser, Encoder }
 import org.geotools.gml2
 
 object GML extends Writer[Geometry] {

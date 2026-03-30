@@ -3,7 +3,7 @@ package org.geoscript
  * Manipulate geometries
  */
 package object geometry {
-  import com.vividsolutions.jts.{geom => jts}
+  import org.locationtech.jts.{geom => jts}
 
   type Geometry = jts.Geometry
   type GeometryCollection = jts.GeometryCollection
@@ -31,8 +31,8 @@ package object geometry {
    * @see org.geoscript.geometry.Geometry.buffer
    */
   object EndCap {
-    // import com.vividsolutions.jts.operation.buffer.BufferOp._
-    import com.vividsolutions.jts.operation.buffer.BufferParameters._
+    // import org.locationtech.jts.operation.buffer.BufferOp._
+    import org.locationtech.jts.operation.buffer.BufferParameters._
 
     sealed abstract class Style(val intValue: Int)
     /** @see EndCap */
@@ -117,12 +117,12 @@ package object geometry {
 }
 
 package geometry {
-  class GeometryBuilder(factory: com.vividsolutions.jts.geom.GeometryFactory) {
+  class GeometryBuilder(factory: org.locationtech.jts.geom.GeometryFactory) {
     def Coordinate(x: Double, y: Double): Coordinate = new Coordinate(x, y)
     def mkCoord(xy: (Double, Double)) = (Coordinate _).tupled(xy)
 
     def Envelope(minx: Double, maxx: Double, miny: Double, maxy: Double): Envelope =
-      new com.vividsolutions.jts.geom.Envelope(minx, maxx, miny, maxy)
+      new org.locationtech.jts.geom.Envelope(minx, maxx, miny, maxy)
 
     def Point(x: Double, y: Double): Point =
       factory.createPoint(Coordinate(x,y))
@@ -154,7 +154,7 @@ package geometry {
   object builder extends GeometryBuilder(factory)
 
   private[geometry] class FunctionAsCoordinateFilter(f: Coordinate => Unit)
-  extends com.vividsolutions.jts.geom.CoordinateFilter
+  extends org.locationtech.jts.geom.CoordinateFilter
   {
     def filter(coord: Coordinate) = f(coord)
   }

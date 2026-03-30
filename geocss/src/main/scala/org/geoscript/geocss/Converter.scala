@@ -4,7 +4,7 @@ import java.io.{ File, FileInputStream, FileOutputStream, OutputStream }
 import CssParser.{Success, NoSuccess}
 
 object Converter {
-  val tx = new org.geotools.styling.SLDTransformer
+  val tx = new org.geotools.xml.styling.SLDTransformer
   tx.setIndentation(4)
 
   val Switch = """--(\p{Graph}+)=(.*)""".r

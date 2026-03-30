@@ -65,7 +65,7 @@ package object feature {
 
   implicit class RichSchema(val schema: Schema) extends AnyVal {
     def name: String = schema.getName.getLocalPart
-    def fields: Seq[Field] = schema.getAttributeDescriptors.asScala
+    def fields: Seq[Field] = schema.getAttributeDescriptors.asScala.toSeq
     def field(name: String): Field = schema.getDescriptor(name)
     def geometryField: GeoField  = schema.getGeometryDescriptor
   }

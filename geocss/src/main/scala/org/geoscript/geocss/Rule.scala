@@ -12,7 +12,7 @@ case class Rule(
   /** Selectors expressing the set of features to which this rule applies */
   selectors: Seq[Selector],
   /** A List of property lists to apply in different rendering contexts */
-  contexts: Seq[Pair[Option[Context], Seq[Property]]]
+  contexts: Seq[(Option[Context], Seq[Property])]
 ) {
   /**
    * Combine this rule with another rule, producing a single rule with all

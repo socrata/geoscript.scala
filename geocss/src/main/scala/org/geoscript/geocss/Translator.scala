@@ -259,7 +259,7 @@ class Translator(val baseURL: Option[java.net.URL]) {
         case Seq(Channel(r), Channel(g), Channel(b)) => Array(r, g, b)
       }
 
-    channels.map(styles.createChannelSelection).orNull // TODO: return Option[ChannelSelection] instead.
+    channels.map(cs => styles.createChannelSelection(cs: _*)).orNull // TODO: return Option[ChannelSelection] instead.
   }
 
   object Double {
@@ -417,7 +417,7 @@ class Translator(val baseURL: Option[java.net.URL]) {
    * Convert a set of properties to a set of Symbolizer objects attached to the
    * given Rule.
    */
-  def symbolize(rule: Rule): Seq[Pair[Double, Symbolizer]] = {
+  def symbolize(rule: Rule): Seq[(Double, Symbolizer)] = {
     val properties = rule.properties
 
     def orderedMarkRules(symbolizerType: String, order: Int): Seq[Property] =
@@ -765,7 +765,7 @@ class Translator(val baseURL: Option[java.net.URL]) {
     yield (t, s.filter(isForTypename(t)).map(stripTypenames))
   }
 
-  def extractScaleRanges(rule: Rule): Seq[Pair[Option[Double], Option[Double]]] = {
+  def extractScaleRanges(rule: Rule): Seq[(Option[Double], Option[Double])] = {
     val scales = 
       flatten(And(rule.selectors))
         .collect { 

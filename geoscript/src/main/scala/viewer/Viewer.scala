@@ -8,7 +8,7 @@ import org.geoscript.style._
 
 import org.geotools.geometry.jts.{ LiteShape, ReferencedEnvelope }
 import java.awt.{ Graphics2D, RenderingHints }
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 private class MapWidget extends swing.Component {
   var viewport = new ReferencedEnvelope(-180, -90, 180, 90, LatLon)
@@ -19,7 +19,7 @@ private class MapWidget extends swing.Component {
       graphics.setRenderingHints(new RenderingHints(Map(
         KEY_ANTIALIASING -> VALUE_ANTIALIAS_ON,
         KEY_TEXT_ANTIALIASING -> VALUE_TEXT_ANTIALIAS_ON
-      )))
+      ).asJava))
     }
     import org.geoscript.render.Viewport.pad
     val displayBounds = pad(viewport, (bounds.width, bounds.height))

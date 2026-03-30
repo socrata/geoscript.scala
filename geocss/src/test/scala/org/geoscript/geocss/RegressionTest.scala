@@ -2,7 +2,7 @@ package org.geoscript.geocss
 
 import org.geoscript.geocss.testing._
 
-import collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 import org.geotools.{ styling => gt }
 import org.opengis.{ filter => ogc }
@@ -35,7 +35,7 @@ class Regressions extends AnyFunSuite with Matchers {
     stylesheet should be ('successful)
     val sld = Translator.css2sld(stylesheet.get)
     sld.featureTypeStyles should have size(1)
-    sld.featureTypeStyles.map(_.rules.size).sum should be (2)
+    sld.featureTypeStyles.asScala.map(_.rules.size).sum should be (2)
   }
 
   test("Rules with conflicting filters cancel out") {
@@ -43,7 +43,7 @@ class Regressions extends AnyFunSuite with Matchers {
     stylesheet should be ('successful)
     val sld = Translator.css2sld(stylesheet.get)
     sld.featureTypeStyles should have size(1)
-    sld.featureTypeStyles.map(_.rules.size).sum should be (9)
+    sld.featureTypeStyles.asScala.map(_.rules.size).sum should be (9)
   }
 
   test("Overlapping scales should not hide filters") {
@@ -51,7 +51,7 @@ class Regressions extends AnyFunSuite with Matchers {
     stylesheet should be ('successful)
     val sld = Translator.css2sld(stylesheet.get)
     sld.featureTypeStyles should have size(1)
-    val rules = sld.featureTypeStyles.flatMap(_.rules)
+    val rules = sld.featureTypeStyles.asScala.flatMap(_.rules.asScala)
     rules should have size(2)
     val filters = rules.map(_.getFilter)
     filters should not(contain(ogc.Filter.INCLUDE: ogc.Filter))
@@ -76,8 +76,8 @@ class Regressions extends AnyFunSuite with Matchers {
     val stylesheet = CssParser.parse(in("/typenames.css"))
     stylesheet should be ('successful)
     val sld = Translator.css2sld(stylesheet.get)
-    val names = for (ft <- sld.featureTypeStyles) yield
-                  for (name <- ft.featureTypeNames.headOption) yield name.getLocalPart
+    val names = for (ft <- sld.featureTypeStyles.asScala) yield
+                  for (name <- ft.featureTypeNames.asScala.headOption) yield name.getLocalPart
     names should containAll(None, Some("states"), Some("cities"))
   }
 
@@ -87,9 +87,9 @@ class Regressions extends AnyFunSuite with Matchers {
     val sld = Translator.css2sld(stylesheet.get)
     val symbolizerGeometries = 
       for {
-        ftStyle <- sld.featureTypeStyles
-        rule <- ftStyle.rules
-        symbolizer <- rule.symbolizers
+        ftStyle <- sld.featureTypeStyles.asScala
+        rule <- ftStyle.rules.asScala
+        symbolizer <- rule.symbolizers.asScala
       } yield symbolizer.getGeometry
 
     for (g <- symbolizerGeometries) 
@@ -110,7 +110,7 @@ class Regressions extends AnyFunSuite with Matchers {
 
     style.featureTypeStyles should have size(1)
   
-    val allRules = style.featureTypeStyles.flatMap(_.rules)
+    val allRules = style.featureTypeStyles.asScala.flatMap(_.rules.asScala)
     allRules should have size(2)
 
     val allFilters = allRules.map(_.getFilter)
@@ -118,15 +118,15 @@ class Regressions extends AnyFunSuite with Matchers {
 
     val ruleWithTheNotFilter = allRules.find(_.getFilter.isInstanceOf[ogc.Not])
     assert(ruleWithTheNotFilter.isDefined)
-    assert(ruleWithTheNotFilter.get.symbolizers.head.isInstanceOf[gt.LineSymbolizer])
+    assert(ruleWithTheNotFilter.get.symbolizers.asScala.head.isInstanceOf[gt.LineSymbolizer])
 
-    val lineSym = ruleWithTheNotFilter.get.symbolizers.head.asInstanceOf[gt.LineSymbolizer]
+    val lineSym = ruleWithTheNotFilter.get.symbolizers.asScala.head.asInstanceOf[gt.LineSymbolizer]
     val graphicalSymbols =
       for {
         stroke <- Option(lineSym.getStroke)
         graphic <- Option(stroke.getGraphicStroke)
         symbols <- Option(graphic.graphicalSymbols)
-        mark <- symbols.headOption.collect { case (m: gt.Mark) => m }
+        mark <- symbols.asScala.headOption.collect { case (m: gt.Mark) => m }
       } yield mark.getWellKnownName.evaluate(null)
 
     graphicalSymbols should be (Some("hatch"))
@@ -137,6 +137,6 @@ class Regressions extends AnyFunSuite with Matchers {
     stylesheet should be ('successful)
     val sld = Translator.css2sld(stylesheet.get)
     sld.featureTypeStyles should have size(1)
-    sld.featureTypeStyles.flatMap(_.rules) should have size(2)
+    sld.featureTypeStyles.asScala.flatMap(_.rules.asScala) should have size(2)
   }
 }

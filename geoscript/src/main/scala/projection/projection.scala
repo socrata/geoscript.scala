@@ -39,7 +39,7 @@ package object projection {
    * axes flipped.
    */
   def forceXYMode() {
-    import org.geotools.factory.Hints
+    import org.geotools.util.factory.Hints
 
     val forceXY = System.getProperty("org.geotools.referencing.forceXY")
 

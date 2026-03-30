@@ -41,7 +41,7 @@ class SmokeTest extends AnyFunSuite with Matchers {
   def sldBytes(rules: Seq[Rule]): Seq[Byte] = {
     val Translator = new Translator
     val sld = Translator.css2sld(rules)
-    val tx = new gt.styling.SLDTransformer
+    val tx = new gt.xml.styling.SLDTransformer
     val bytes = new java.io.ByteArrayOutputStream
     tx.transform(sld, bytes)
     bytes.toByteArray

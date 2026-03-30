@@ -6,11 +6,11 @@ import org.geoscript.io.{ Format, Source, Sink }
 object SLD extends Format[Style] {
   def read(source: Source): Style = 
     source { in =>
-      new org.geotools.styling.SLDParser(factory, in).readXML()(0)
+      new org.geotools.xml.styling.SLDParser(factory, in).readXML()(0)
     }
   def write[T](s: Style, sink: Sink[T]): T = {
     sink { out =>
-      new org.geotools.styling.SLDTransformer().transform(s, out)
+      new org.geotools.xml.styling.SLDTransformer().transform(s, out)
     }
   }
 }

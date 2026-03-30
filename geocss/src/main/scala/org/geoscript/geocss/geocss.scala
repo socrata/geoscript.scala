@@ -1,6 +1,6 @@
 package org.geoscript
 
-import collection.JavaConversions._
+import scala.collection.JavaConverters._
 import org.opengis.{ filter => ogc }
 
 package object geocss {
@@ -28,13 +28,13 @@ package object geocss {
         (xs flatMap realize) match {
           case Nil => None
           case Seq(f) => Some(f)
-          case fs  => Some(filters.and(fs))
+          case fs  => Some(filters.and(fs.asJava))
         }
       case Or(xs) =>
         (xs flatMap realize) match {
           case Nil => None
           case Seq(f) => Some(f)
-          case fs  => Some(filters.or(fs))
+          case fs  => Some(filters.or(fs.asJava))
         }
       case Not(x) =>
         for (f <- realize(x)) yield filters.not(f)

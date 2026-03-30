@@ -14,6 +14,6 @@ package object testing extends Matchers {
         "%f was within %f of %f".format(d, x, eps))
     }
 
-  def containAll[A](x: A, xs: A*): Matcher[Traversable[A]] = 
+  def containAll[A](x: A, xs: A*): Matcher[Iterable[A]] = 
     (xs foldLeft (contain(x))) { (x, y) => x and contain(y) }
 }

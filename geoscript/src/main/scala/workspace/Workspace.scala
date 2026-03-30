@@ -4,7 +4,7 @@ import java.io.{File, Serializable}
 import org.geoscript.feature._
 import org.geoscript.layer._
 import org.{geotools => gt}
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 package object workspace {
   type Workspace = org.geotools.data.DataStore
@@ -13,11 +13,11 @@ package object workspace {
     def count = workspace.getTypeNames.length
     def names: Seq[String] = workspace.getTypeNames
     def layer(theName: String): Layer = workspace.getFeatureSource(theName)
-    def layers: Seq[Layer] = names.view.map(layer(_))
+    def layers: Seq[Layer] = names.view.map(layer(_)).toSeq
 
     def create(name: String, fields: Field*): Layer = create(name, fields) 
 
-    def create(name: String, fields: Traversable[Field]): Layer = {
+    def create(name: String, fields: Iterable[Field]): Layer = {
       val builder = new gt.feature.simple.SimpleFeatureTypeBuilder
       builder.setName(name)
       fields foreach {
@@ -42,8 +42,6 @@ package workspace {
 
   object Postgis {
     val factory = new gt.data.postgis.PostgisNGDataStoreFactory
-    val create: (java.util.HashMap[_,_]) => gt.data.DataStore = 
-      factory.createDataStore
 
     def apply(params: (String,java.io.Serializable)*) = { 
       val connection = new java.util.HashMap[String,java.io.Serializable] 
@@ -56,23 +54,8 @@ package workspace {
       for ((key,value) <- params)  { 
         connection.put(key,value)           
       }
-      create(connection)
+      factory.createDataStore(connection)
    } 
-  }
-
-  object SpatiaLite {
-    val factory = new gt.data.spatialite.SpatiaLiteDataStoreFactory 
-    private val create: (java.util.HashMap[_,_]) => gt.data.DataStore =
-      factory.createDataStore
-
-    def apply(params: (String,java.io.Serializable)*) = { 
-      val connection = new java.util.HashMap[String,java.io.Serializable] 
-      connection.put("dbtype","spatialite")
-      for ((key,value) <- params) { 
-        connection.put(key,value)  
-      }
-      create(connection: java.util.HashMap[_,_])
-    } 
   }
 
   object Directory {
@@ -83,7 +66,7 @@ package workspace {
     def apply(path: File): Workspace = {
       val params = new java.util.HashMap[String, java.io.Serializable]
       params.put("url", path.toURI.toURL)
-      factory.createDataStore(params: java.util.Map[_, _])
+      factory.createDataStore(params)
     }
   }
 }

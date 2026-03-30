@@ -1,17 +1,18 @@
-import sbt._, Keys._, Defaults.defaultSettings
+import sbt._
+import Keys._
+import scala.sys.process._
 
-object GeoScript extends Build {
+object GeoScript {
   lazy val gtVersion =
-    SettingKey[String]("gt-version", "Version number for GeoTools modules")
+    settingKey[String]("Version number for GeoTools modules")
 
   val meta =
     Seq[Setting[_]](
       organization := "com.socrata",
-      version := "0.8.4",
-      gtVersion := "9.3",
-      scalaVersion := "2.12.8",
+      version := "0.8.5",
+      scalaVersion := "2.12.21",
       scalacOptions ++= Seq("-feature", "-deprecation", "-Xlint", "-unchecked"),
-      javacOptions ++= Seq("-source", "6"),
+      javacOptions ++= Seq("--release", "25"),
       publishTo := Some(Resolver.file("file", file("release")))
     )
 
@@ -19,50 +20,72 @@ object GeoScript extends Build {
     Seq[Setting[_]](
       fork := true,
       resolvers ++= Seq(
-        // "opengeo" at "http://repo.opengeo.org/",
-        // "osgeo" at "http://download.osgeo.org/webdav/geotools/"
+        "osgeo" at "https://repo.osgeo.org/repository/release/",
         "socrata artifactory" at "https://repo.socrata.com/artifactory/libs-release"
       )
-    ) ++ meta ++ defaultSettings
+    ) ++ meta
 
   val sphinxSettings =
     Seq(
-      baseDirectory <<= thisProject(_.base),
-      target <<= baseDirectory / "target",
-      sphinxDir <<= crossTarget(_ / "sphinx"),
-      sphinxSource <<= baseDirectory(_ / "src" / "main" / "sphinx"),
+      baseDirectory := thisProject.value.base,
+      target := baseDirectory.value / "target",
+      sphinxDir := crossTarget.value / "sphinx",
+      sphinxSource := baseDirectory.value / "src" / "main" / "sphinx",
       sphinxBuild := "sphinx-build",
       sphinxOpts := Nil,
-      sphinx <<= (sphinxBuild, sphinxSource, sphinxDir, sphinxOpts) map (runSphinx),
-      watchSources <<= (baseDirectory, target) map { (b, t) => (b ** "*") --- (t ** "*") get }
+      sphinx := runSphinx(sphinxBuild.value, sphinxSource.value, sphinxDir.value, sphinxOpts.value),
+      watchSources ++= {
+        val b = baseDirectory.value
+        val t = target.value
+        ((b ** "*") --- (t ** "*")).get
+      }
     )
 
   lazy val root =
-    Project("root", file("."), settings = common ++ Seq(fork in test := false, publish := false)) aggregate(css, examples, library)
+    project
+      .in(file("."))
+      .settings(common)
+      .settings(Test / fork := false, publish / skip := true)
+      .aggregate(css, examples, library)
+
   lazy val css =
-    Project("css", file("geocss"), settings = common)
+    project
+      .in(file("geocss"))
+      .settings(common)
+      .settings(gtVersion := "27.5")
+
   lazy val examples =
-    Project("examples", file("examples"), settings = common ++ Seq(fork in test := false, publish := false)) dependsOn(library)
+    project
+      .in(file("examples"))
+      .settings(common)
+      .settings(Test / fork := false, publish / skip := true)
+      .dependsOn(library)
+
   lazy val library =
-    Project("library", file("geoscript"), settings = sphinxSettings ++ common) dependsOn(css)
+    project
+      .in(file("geoscript"))
+      .settings(common)
+      .settings(gtVersion := "27.5")
+      .settings(sphinxSettings)
+      .dependsOn(css)
 
   lazy val sphinx =
-    TaskKey[java.io.File]("sphinx", "runs sphinx documentation generator")
+    taskKey[java.io.File]("runs sphinx documentation generator")
   lazy val sphinxBuild =
-    SettingKey[String]("sphinx-build", "command to use when building sphinx")
+    settingKey[String]("command to use when building sphinx")
   lazy val sphinxOpts =
-    SettingKey[Seq[String]]("sphinx-opts", "options to pass to sphinx-build script")
+    settingKey[Seq[String]]("options to pass to sphinx-build script")
   lazy val sphinxSource =
-    SettingKey[java.io.File]("sphinx-source", "source directory for sphinx docs")
+    settingKey[java.io.File]("source directory for sphinx docs")
   lazy val sphinxDir =
-    SettingKey[java.io.File]("sphinx-dir", "output directory for sphinx docs")
+    settingKey[java.io.File]("output directory for sphinx docs")
 
   def runSphinx(script: String, input: java.io.File, output: java.io.File, opts: Seq[String]) = {
     val cmd = Seq(script) ++ opts ++ Seq("-b", "html", "-d",
       (output / "doctrees").getAbsolutePath,
       input.getAbsolutePath,
       (output / "html").getAbsolutePath)
-    cmd ! ;
+    cmd.!
     output / "html"
   }
 }
