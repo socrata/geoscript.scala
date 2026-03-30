@@ -12,7 +12,7 @@ object GeoScript {
       version := "0.8.5",
       scalaVersion := "2.12.21",
       scalacOptions ++= Seq("-feature", "-deprecation", "-Xlint", "-unchecked"),
-      javacOptions ++= Seq("--release", "25"),
+      javacOptions ++= Seq("--release", "17"),
       publishTo := Some(Resolver.file("file", file("release")))
     )
 
